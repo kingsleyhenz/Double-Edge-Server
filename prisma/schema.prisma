@@ -11,6 +11,17 @@ model User {
   email     String   @unique
   name      String
   password  String
+
+  // Onboarding Data
+  intent    UserIntent?
+  teamSize  TeamSize?
+  role      UserRole?
+  hasCompletedOnboarding Boolean @default(false)
+
+  // Relations
+  workspaces Workspace[] 
+  tasks      Task[]      @relation("AssignedTasks")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
