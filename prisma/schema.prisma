@@ -7,23 +7,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  password  String
-
-  // Onboarding Data
-  intent    UserIntent?
-  teamSize  TeamSize?
-  role      UserRole?
-  hasCompletedOnboarding Boolean @default(false)
-
-  // Relations
-  workspaces Workspace[] 
-  tasks      Task[]      @relation("AssignedTasks")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                     String      @id @default(uuid())
+  email                  String      @unique
+  name                   String
+  password               String
+  intent                 UserIntent?
+  teamSize               TeamSize?
+  role                   UserRole?
+  hasCompletedOnboarding Boolean     @default(false)
+  workspaces             Workspace[]
+  tasks                  Task[]      @relation("AssignedTasks")
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
 }
 
 enum UserIntent {
@@ -61,49 +56,39 @@ enum TaskPriority {
 }
 
 model Workspace {
-  id          String   @id @default(uuid())
-  name        String   // e.g., "John's Team Hub"
+  id          String    @id @default(uuid())
+  name        String
   description String?
-  
-  // Relations
   ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   projects    Project[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Project {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   name        String
   description String?
-  color       String?  // For UI aesthetics
-  
-  // Relations
+  color       String? 
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   tasks       Task[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String?
   status      TaskStatus   @default(TODO)
   priority    TaskPriority @default(MEDIUM)
   dueDate     DateTime?
-  
-  // Relations
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  
-  assigneeId  String?
-  assignee    User?    @relation("AssignedTasks", fields: [assigneeId], references: [id], onDelete: SetNull)
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assigneeId String?
+  assignee   User?   @relation("AssignedTasks", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
