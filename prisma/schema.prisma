@@ -59,3 +59,17 @@ enum TaskPriority {
   HIGH
   URGENT
 }
+
+model Workspace {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "John's Team Hub"
+  description String?
+  
+  // Relations
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  projects    Project[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
