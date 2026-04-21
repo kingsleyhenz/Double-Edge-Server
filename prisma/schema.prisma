@@ -73,3 +73,18 @@ model Workspace {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Project {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  color       String?  // For UI aesthetics
+  
+  // Relations
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  tasks       Task[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
