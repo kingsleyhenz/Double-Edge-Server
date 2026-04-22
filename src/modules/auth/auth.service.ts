@@ -26,7 +26,7 @@ class AuthService {
       },
     });
 
-    const token = this.generateToken(user.id);
+    const token = this.generateToken(user.id, user.role);
     const { password, ...userWithoutPassword } = user;
 
     return { user: userWithoutPassword, token };
@@ -47,14 +47,14 @@ class AuthService {
       throw new Error('Invalid email or password');
     }
 
-    const token = this.generateToken(user.id);
+    const token = this.generateToken(user.id, user.role);
     const { password, ...userWithoutPassword } = user;
 
     return { user: userWithoutPassword, token };
   }
 
-  private generateToken(userId: string): string {
-    return jwt.sign({ userId }, this.jwtSecret, { expiresIn: '7d' });
+  private generateToken(userId: string, role?: string | null): string {
+    return jwt.sign({ userId, role }, this.jwtSecret, { expiresIn: '7d' });
   }
 }
 
