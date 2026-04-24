@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { StatusCodes } from 'http-status-codes';
 import authRoutes from './modules/auth/auth.route';
+import userRoutes from './modules/user/user.route';
 import { HttpResponse } from './utils/response.util';
 
 const app: Application = express();
@@ -11,6 +12,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {
