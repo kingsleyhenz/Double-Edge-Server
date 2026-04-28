@@ -21,6 +21,7 @@ model User {
   goals                  Goal[]
   courses                Course[]
   assignments            Assignment[]
+  sentInvites            WorkspaceInvite[] @relation("SentInvites")
   createdAt              DateTime          @default(now())
   updatedAt              DateTime          @updatedAt
 }
@@ -32,8 +33,9 @@ model Workspace {
   ownerId     String
   owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   members     WorkspaceMember[]
+  invites     WorkspaceInvite[]
   projects    Project[]
-  tasks       Task[] // Standalone tasks in workspace
+  tasks       Task[]            // Standalone tasks in workspace
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 }
@@ -48,6 +50,21 @@ model WorkspaceMember {
   joinedAt    DateTime  @default(now())
 
   @@unique([workspaceId, userId])
+}
+
+model WorkspaceInvite {
+  id          String    @id @default(uuid())
+  email       String
+  token       String    @unique
+  role        String    @default("MEMBER")
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  inviterId   String
+  inviter     User      @relation("SentInvites", fields: [inviterId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@unique([workspaceId, email])
 }
 
 model Project {
