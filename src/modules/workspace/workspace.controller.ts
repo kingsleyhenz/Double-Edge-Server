@@ -31,6 +31,22 @@ class WorkspaceController {
       next(error);
     }
   };
+
+  public inviteToWorkspace = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const inviterId = req.user?.userId;
+      const workspaceId = req.params.id;
+      if (!inviterId) return HttpResponse.error(res, StatusCodes.UNAUTHORIZED, 'Unauthorized');
+
+      const result = await this.workspaceService.inviteToWorkspace(workspaceId, inviterId, req.body);
+      return HttpResponse.success(res, StatusCodes.OK, 'Invite processed successfully', result);
+    } catch (error: any) {
+      if (error.message === 'Workspace not found') {
+        return HttpResponse.error(res, StatusCodes.NOT_FOUND, error.message);
+      }
+      next(error);
+    }
+  };
 }
 
 export default WorkspaceController;

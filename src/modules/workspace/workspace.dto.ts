@@ -9,3 +9,9 @@ export class CreateWorkspaceDto {
   @IsOptional()
   description?: string;
 }
+
+export class InviteWorkspaceDto {
+  @IsString()
+  @IsNotEmpty()
+  email!: string;
+}
