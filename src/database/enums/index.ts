@@ -31,3 +31,15 @@ export enum TaskPriority {
   HIGH = 'HIGH',
   URGENT = 'URGENT',
 }
+
+export enum WorkspaceRole {
+  ADMIN = 'ADMIN',
+  MEMBER = 'MEMBER',
+  VIEWER = 'VIEWER',
+}
+
+export enum AssignmentStatus {
+  PENDING = 'PENDING',
+  SUBMITTED = 'SUBMITTED',
+  GRADED = 'GRADED',
+}

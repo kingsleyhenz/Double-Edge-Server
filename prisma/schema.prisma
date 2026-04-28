@@ -7,29 +7,47 @@ datasource db {
 }
 
 model User {
-  id                     String      @id @default(uuid())
-  email                  String      @unique
+  id                     String            @id @default(uuid())
+  email                  String            @unique
   name                   String
   password               String
   intent                 String?
   teamSize               String?
   role                   String?
-  hasCompletedOnboarding Boolean     @default(false)
-  workspaces             Workspace[]
-  tasks                  Task[]      @relation("AssignedTasks")
-  createdAt              DateTime    @default(now())
-  updatedAt              DateTime    @updatedAt
+  hasCompletedOnboarding Boolean           @default(false)
+  ownedWorkspaces        Workspace[]       @relation("WorkspaceOwner")
+  workspaceMemberships   WorkspaceMember[]
+  tasks                  Task[]            @relation("AssignedTasks")
+  goals                  Goal[]
+  courses                Course[]
+  assignments            Assignment[]
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
 }
 
 model Workspace {
-  id          String    @id @default(uuid())
+  id          String            @id @default(uuid())
   name        String
   description String?
   ownerId     String
-  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner       User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members     WorkspaceMember[]
   projects    Project[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  tasks       Task[] // Standalone tasks in workspace
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model WorkspaceMember {
+  id          String    @id @default(uuid())
+  workspaceId String
+  userId      String
+  role        String    @default("MEMBER") // e.g., ADMIN, MEMBER, VIEWER
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt    DateTime  @default(now())
+
+  @@unique([workspaceId, userId])
 }
 
 model Project {
@@ -48,13 +66,54 @@ model Task {
   id          String    @id @default(uuid())
   title       String
   description String?
-  status      String    @default("TODO")
-  priority    String    @default("MEDIUM")
+  status      String    @default("TODO") // TODO, IN_PROGRESS, REVIEW, DONE
+  priority    String    @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
   dueDate     DateTime?
-  projectId   String
-  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  projectId   String?
+  project     Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   assigneeId  String?
   assignee    User?     @relation("AssignedTasks", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Goal {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  targetDate  DateTime?
+  progress    Int       @default(0) // 0 to 100
+  color       String?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Course {
+  id          String       @id @default(uuid())
+  name        String
+  code        String?
+  color       String?
+  userId      String
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Assignment {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      String    @default("PENDING") // PENDING, SUBMITTED, GRADED
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
