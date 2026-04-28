@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import authRoutes from './modules/auth/auth.route';
 import userRoutes from './modules/user/user.route';
 import workspaceRoutes from './modules/workspace/workspace.route';
+import projectRoutes from './modules/project/project.route';
 import { HttpResponse } from './utils/response.util';
 
 const app: Application = express();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workspaces', workspaceRoutes);
+app.use('/api/projects', projectRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {
