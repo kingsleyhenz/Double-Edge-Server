@@ -17,6 +17,16 @@ class ProjectController {
       next(error);
     }
   };
+
+  public getWorkspaceProjects = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { workspaceId } = req.params;
+      const result = await this.projectService.getWorkspaceProjects(workspaceId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Projects retrieved successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ProjectController;

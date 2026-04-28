@@ -8,5 +8,6 @@ const router = Router();
 const projectController = new ProjectController();
 
 router.post('/', authMiddleware, validationMiddleware(CreateProjectDto), projectController.createProject);
+router.get('/workspace/:workspaceId', authMiddleware, projectController.getWorkspaceProjects);
 
 export default router;

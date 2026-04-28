@@ -16,4 +16,16 @@ export default class ProjectService {
     });
     return project;
   }
+
+  public async getWorkspaceProjects(workspaceId: string) {
+    const projects = await prisma.project.findMany({
+      where: { workspaceId },
+      include: {
+        _count: {
+          select: { tasks: true }
+        }
+      }
+    });
+    return projects;
+  }
 }
