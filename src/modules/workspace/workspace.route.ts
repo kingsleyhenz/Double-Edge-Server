@@ -8,5 +8,6 @@ const router = Router();
 const workspaceController = new WorkspaceController();
 
 router.post('/', authMiddleware, validationMiddleware(CreateWorkspaceDto), workspaceController.createWorkspace);
+router.get('/', authMiddleware, workspaceController.getWorkspaces);
 
 export default router;

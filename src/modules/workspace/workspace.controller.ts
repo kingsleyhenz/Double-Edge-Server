@@ -19,6 +19,18 @@ class WorkspaceController {
       next(error);
     }
   };
+
+  public getWorkspaces = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) return HttpResponse.error(res, StatusCodes.UNAUTHORIZED, 'Unauthorized');
+      
+      const result = await this.workspaceService.getWorkspaces(userId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Workspaces retrieved successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default WorkspaceController;
