@@ -27,6 +27,26 @@ class ProjectController {
       next(error);
     }
   };
+
+  public updateProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const result = await this.projectService.updateProject(id, req.body);
+      return HttpResponse.success(res, StatusCodes.OK, 'Project updated successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteProject = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const result = await this.projectService.deleteProject(id);
+      return HttpResponse.success(res, StatusCodes.OK, 'Project deleted successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default ProjectController;

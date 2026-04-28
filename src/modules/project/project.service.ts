@@ -28,4 +28,19 @@ export default class ProjectService {
     });
     return projects;
   }
+
+  public async updateProject(projectId: string, data: any) {
+    const project = await prisma.project.update({
+      where: { id: projectId },
+      data
+    });
+    return project;
+  }
+
+  public async deleteProject(projectId: string) {
+    await prisma.project.delete({
+      where: { id: projectId }
+    });
+    return { success: true };
+  }
 }
