@@ -34,3 +34,15 @@ export class CreateTaskDto {
   @IsOptional()
   assigneeId?: string;
 }
+
+export class UpdateTaskStatusDto {
+  @IsEnum(TaskStatus)
+  @IsNotEmpty()
+  status!: TaskStatus;
+}
+
+export class AssignTaskDto {
+  @IsString()
+  @IsNotEmpty()
+  assigneeId!: string;
+}

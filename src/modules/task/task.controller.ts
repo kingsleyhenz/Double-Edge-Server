@@ -32,6 +32,28 @@ class TaskController {
       next(error);
     }
   };
+
+  public updateTaskStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const result = await this.taskService.updateTaskStatus(id, status);
+      return HttpResponse.success(res, StatusCodes.OK, 'Task status updated successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public assignTask = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const { assigneeId } = req.body;
+      const result = await this.taskService.assignTask(id, assigneeId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Task assigned successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default TaskController;

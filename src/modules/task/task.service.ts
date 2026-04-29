@@ -37,4 +37,20 @@ export default class TaskService {
     });
     return tasks;
   }
+
+  public async updateTaskStatus(taskId: string, status: any) {
+    const task = await prisma.task.update({
+      where: { id: taskId },
+      data: { status }
+    });
+    return task;
+  }
+
+  public async assignTask(taskId: string, assigneeId: string) {
+    const task = await prisma.task.update({
+      where: { id: taskId },
+      data: { assigneeId }
+    });
+    return task;
+  }
 }
