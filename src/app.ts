@@ -5,6 +5,7 @@ import authRoutes from './modules/auth/auth.route';
 import userRoutes from './modules/user/user.route';
 import workspaceRoutes from './modules/workspace/workspace.route';
 import projectRoutes from './modules/project/project.route';
+import taskRoutes from './modules/task/task.route';
 import { HttpResponse } from './utils/response.util';
 
 const app: Application = express();
@@ -17,6 +18,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {
