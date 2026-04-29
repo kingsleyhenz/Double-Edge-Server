@@ -17,6 +17,21 @@ class TaskController {
       next(error);
     }
   };
+
+  public getWorkspaceTasks = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { workspaceId } = req.params;
+      const filters = {
+        projectId: req.query.projectId as string,
+        assigneeId: req.query.assigneeId as string,
+        status: req.query.status as string,
+      };
+      const result = await this.taskService.getWorkspaceTasks(workspaceId, filters);
+      return HttpResponse.success(res, StatusCodes.OK, 'Tasks retrieved successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default TaskController;
