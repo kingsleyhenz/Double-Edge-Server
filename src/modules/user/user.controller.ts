@@ -42,6 +42,29 @@ class UserController {
       next(error);
     }
   };
+
+  public getSettings = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) return HttpResponse.error(res, StatusCodes.UNAUTHORIZED, 'Unauthorized');
+      const settings = await this.userService.getSettings(userId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Settings retrieved successfully', settings);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateSettings = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?.userId;
+      if (!userId) return HttpResponse.error(res, StatusCodes.UNAUTHORIZED, 'Unauthorized');
+      const { settings } = req.body;
+      const updatedSettings = await this.userService.updateSettings(userId, settings);
+      return HttpResponse.success(res, StatusCodes.OK, 'Settings updated successfully', updatedSettings);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default UserController;

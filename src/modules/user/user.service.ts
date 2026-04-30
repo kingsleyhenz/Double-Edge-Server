@@ -44,6 +44,30 @@ class UserService {
     });
     return updatedUser;
   }
+
+  public async getSettings(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { settings: true },
+    });
+    if (!user) throw new Error("User not found");
+    return user.settings || {};
+  }
+
+  public async updateSettings(userId: string, settings: any) {
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new Error("User not found");
+
+    const currentSettings = (user.settings as Record<string, any>) || {};
+    const updatedSettings = { ...currentSettings, ...settings };
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: { settings: updatedSettings },
+      select: { settings: true },
+    });
+    return updatedUser.settings;
+  }
 }
 
 export default UserService;

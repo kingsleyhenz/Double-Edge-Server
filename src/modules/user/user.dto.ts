@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsEnum, IsOptional, IsObject } from 'class-validator';
 import { UserIntent, TeamSize, UserRole } from '../../database/enums';
 
 export class OnboardingDto {
@@ -31,4 +31,10 @@ export class UpdateProfileDto {
   @IsOptional()
   @IsString()
   teamSize?: string;
+}
+
+export class UpdateSettingsDto {
+  @IsOptional()
+  @IsObject()
+  settings?: Record<string, any>;
 }
