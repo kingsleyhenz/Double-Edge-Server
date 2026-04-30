@@ -15,6 +15,8 @@ model User {
   teamSize               String?
   role                   String?
   hasCompletedOnboarding Boolean           @default(false)
+  avatarUrl              String?
+  settings               Json?
   ownedWorkspaces        Workspace[]       @relation("WorkspaceOwner")
   workspaceMemberships   WorkspaceMember[]
   tasks                  Task[]            @relation("AssignedTasks")

@@ -14,3 +14,21 @@ export class OnboardingDto {
   @IsEnum(UserRole)
   role?: UserRole;
 }
+
+export class UpdateProfileDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  avatarUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  intent?: string;
+
+  @IsOptional()
+  @IsString()
+  teamSize?: string;
+}

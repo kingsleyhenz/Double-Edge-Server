@@ -26,6 +26,24 @@ class UserService {
 
     return { user: updatedUser, workspace: newWorkspace };
   }
+
+  public async getProfile(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true, email: true, name: true, avatarUrl: true, intent: true, teamSize: true, role: true, hasCompletedOnboarding: true, settings: true, createdAt: true, updatedAt: true },
+    });
+    if (!user) throw new Error("User not found");
+    return user;
+  }
+
+  public async updateProfile(userId: string, data: any) {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data,
+      select: { id: true, email: true, name: true, avatarUrl: true, intent: true, teamSize: true, role: true, hasCompletedOnboarding: true, settings: true, createdAt: true, updatedAt: true },
+    });
+    return updatedUser;
+  }
 }
 
 export default UserService;

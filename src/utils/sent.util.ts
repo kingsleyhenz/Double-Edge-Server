@@ -4,11 +4,6 @@ const SENT_API_KEY = process.env.SENT_API_KEY;
 const SENT_API_URL = 'https://api.sent.dm/v1/messages'; // Approximation of Sent API endpoint
 
 export const SentUtil = {
-  /**
-   * Sends a message (SMS/WhatsApp) using the Sent API.
-   * Fails silently if the API key is not configured or if the request fails,
-   * ensuring the calling endpoint continues to execute smoothly.
-   */
   async sendMessage(to: string, text: string): Promise<void> {
     if (!SENT_API_KEY || SENT_API_KEY === 'your_sent_api_key_here') {
       console.warn('[Sent API] Missing valid SENT_API_KEY. Message to', to, 'skipped silently.');
