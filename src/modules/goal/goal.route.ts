@@ -10,5 +10,6 @@ const goalController = new GoalController();
 router.post('/', authMiddleware, validationMiddleware(CreateGoalDto), goalController.createGoal);
 router.get('/', authMiddleware, goalController.getUserGoals);
 router.patch('/:id', authMiddleware, validationMiddleware(UpdateGoalDto), goalController.updateGoal);
+router.delete('/:id', authMiddleware, goalController.deleteGoal);
 
 export default router;

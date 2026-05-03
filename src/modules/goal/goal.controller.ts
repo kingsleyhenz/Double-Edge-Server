@@ -39,6 +39,20 @@ class GoalController {
       next(error);
     }
   };
+
+  public deleteGoal = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const { id } = req.params;
+      await this.goalService.deleteGoal(id, userId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Goal deleted successfully', null);
+    } catch (error: any) {
+      if (error.message === 'Goal not found or unauthorized') {
+        return HttpResponse.error(res, StatusCodes.NOT_FOUND, error.message);
+      }
+      next(error);
+    }
+  };
 }
 
 export default GoalController;

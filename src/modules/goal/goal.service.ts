@@ -41,4 +41,14 @@ export default class GoalService {
     });
     return goal;
   }
+
+  public async deleteGoal(goalId: string, userId: string) {
+    const existing = await prisma.goal.findUnique({ where: { id: goalId } });
+    if (!existing || existing.userId !== userId) {
+      throw new Error('Goal not found or unauthorized');
+    }
+
+    await prisma.goal.delete({ where: { id: goalId } });
+    return true;
+  }
 }
