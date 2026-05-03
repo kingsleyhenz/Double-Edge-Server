@@ -22,4 +22,23 @@ export default class GoalService {
     });
     return goals;
   }
+
+  public async updateGoal(goalId: string, userId: string, data: UpdateGoalDto) {
+    const existing = await prisma.goal.findUnique({ where: { id: goalId } });
+    if (!existing || existing.userId !== userId) {
+      throw new Error('Goal not found or unauthorized');
+    }
+
+    const goal = await prisma.goal.update({
+      where: { id: goalId },
+      data: {
+        title: data.title,
+        description: data.description,
+        targetDate: data.targetDate ? new Date(data.targetDate) : undefined,
+        progress: data.progress,
+        color: data.color,
+      }
+    });
+    return goal;
+  }
 }

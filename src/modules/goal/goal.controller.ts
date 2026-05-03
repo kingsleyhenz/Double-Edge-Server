@@ -25,6 +25,20 @@ class GoalController {
       next(error);
     }
   };
+
+  public updateGoal = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const { id } = req.params;
+      const result = await this.goalService.updateGoal(id, userId, req.body);
+      return HttpResponse.success(res, StatusCodes.OK, 'Goal updated successfully', result);
+    } catch (error: any) {
+      if (error.message === 'Goal not found or unauthorized') {
+        return HttpResponse.error(res, StatusCodes.NOT_FOUND, error.message);
+      }
+      next(error);
+    }
+  };
 }
 
 export default GoalController;

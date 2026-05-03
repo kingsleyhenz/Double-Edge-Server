@@ -2,12 +2,13 @@ import { Router } from 'express';
 import GoalController from './goal.controller';
 import { validationMiddleware } from '../../middlewares/validation.middleware';
 import { authMiddleware } from '../../middlewares/auth.middleware';
-import { CreateGoalDto } from './goal.dto';
+import { CreateGoalDto, UpdateGoalDto } from './goal.dto';
 
 const router = Router();
 const goalController = new GoalController();
 
 router.post('/', authMiddleware, validationMiddleware(CreateGoalDto), goalController.createGoal);
 router.get('/', authMiddleware, goalController.getUserGoals);
+router.patch('/:id', authMiddleware, validationMiddleware(UpdateGoalDto), goalController.updateGoal);
 
 export default router;
