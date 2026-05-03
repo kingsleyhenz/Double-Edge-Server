@@ -8,5 +8,6 @@ const router = Router();
 const goalController = new GoalController();
 
 router.post('/', authMiddleware, validationMiddleware(CreateGoalDto), goalController.createGoal);
+router.get('/', authMiddleware, goalController.getUserGoals);
 
 export default router;

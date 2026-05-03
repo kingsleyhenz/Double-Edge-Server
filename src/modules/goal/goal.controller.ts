@@ -15,6 +15,16 @@ class GoalController {
       next(error);
     }
   };
+
+  public getUserGoals = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = (req as any).user.id;
+      const result = await this.goalService.getUserGoals(userId);
+      return HttpResponse.success(res, StatusCodes.OK, 'Goals retrieved successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default GoalController;

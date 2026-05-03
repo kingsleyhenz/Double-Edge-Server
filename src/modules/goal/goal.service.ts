@@ -14,4 +14,12 @@ export default class GoalService {
     });
     return goal;
   }
+
+  public async getUserGoals(userId: string) {
+    const goals = await prisma.goal.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' }
+    });
+    return goals;
+  }
 }
