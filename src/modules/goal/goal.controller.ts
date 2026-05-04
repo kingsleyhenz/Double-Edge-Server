@@ -8,7 +8,7 @@ class GoalController {
 
   public createGoal = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = (req as any).user.id;
+      const userId = req.user!.userId;
       const result = await this.goalService.createGoal(userId, req.body);
       return HttpResponse.success(res, StatusCodes.CREATED, 'Goal created successfully', result);
     } catch (error) {
@@ -18,7 +18,7 @@ class GoalController {
 
   public getUserGoals = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = (req as any).user.id;
+      const userId = req.user!.userId;
       const result = await this.goalService.getUserGoals(userId);
       return HttpResponse.success(res, StatusCodes.OK, 'Goals retrieved successfully', result);
     } catch (error) {
@@ -28,7 +28,7 @@ class GoalController {
 
   public updateGoal = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = (req as any).user.id;
+      const userId = req.user!.userId;
       const { id } = req.params;
       const result = await this.goalService.updateGoal(id, userId, req.body);
       return HttpResponse.success(res, StatusCodes.OK, 'Goal updated successfully', result);
