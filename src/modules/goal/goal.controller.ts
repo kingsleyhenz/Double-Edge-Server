@@ -42,7 +42,7 @@ class GoalController {
 
   public deleteGoal = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userId = (req as any).user.id;
+      const userId = req.user!.userId;
       const { id } = req.params;
       await this.goalService.deleteGoal(id, userId);
       return HttpResponse.success(res, StatusCodes.OK, 'Goal deleted successfully', null);
