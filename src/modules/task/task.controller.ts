@@ -55,6 +55,26 @@ class TaskController {
       next(error);
     }
   };
+
+  public updateTask = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const result = await this.taskService.updateTask(id, req.body);
+      return HttpResponse.success(res, StatusCodes.OK, 'Task updated successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public deleteTask = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      await this.taskService.deleteTask(id);
+      return HttpResponse.success(res, StatusCodes.OK, 'Task deleted successfully', null);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default TaskController;

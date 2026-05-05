@@ -46,3 +46,21 @@ export class AssignTaskDto {
   @IsNotEmpty()
   assigneeId!: string;
 }
+
+export class UpdateTaskDto {
+  @IsString()
+  @IsOptional()
+  title?: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsEnum(TaskPriority)
+  @IsOptional()
+  priority?: TaskPriority;
+
+  @IsDateString()
+  @IsOptional()
+  dueDate?: string;
+}

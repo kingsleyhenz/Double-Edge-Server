@@ -54,4 +54,24 @@ export default class TaskService {
     });
     return task;
   }
+
+  public async updateTask(taskId: string, data: any) {
+    const task = await prisma.task.update({
+      where: { id: taskId },
+      data: {
+        ...(data.title && { title: data.title }),
+        ...(data.description !== undefined && { description: data.description }),
+        ...(data.priority && { priority: data.priority }),
+        ...(data.dueDate !== undefined && { dueDate: data.dueDate ? new Date(data.dueDate) : null }),
+      }
+    });
+    return task;
+  }
+
+  public async deleteTask(taskId: string) {
+    await prisma.task.delete({
+      where: { id: taskId }
+    });
+    return true;
+  }
 }
