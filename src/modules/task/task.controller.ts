@@ -25,6 +25,7 @@ class TaskController {
         projectId: req.query.projectId as string,
         assigneeId: req.query.assigneeId as string,
         status: req.query.status as string,
+        priority: req.query.priority as string,
       };
       const result = await this.taskService.getWorkspaceTasks(workspaceId, filters);
       return HttpResponse.success(res, StatusCodes.OK, 'Tasks retrieved successfully', result);

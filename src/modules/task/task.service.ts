@@ -26,6 +26,7 @@ export default class TaskService {
     if (filters.projectId) whereClause.projectId = filters.projectId;
     if (filters.assigneeId) whereClause.assigneeId = filters.assigneeId;
     if (filters.status) whereClause.status = filters.status;
+    if (filters.priority) whereClause.priority = filters.priority;
     
     const tasks = await prisma.task.findMany({
       where: whereClause,
