@@ -7,6 +7,7 @@ import workspaceRoutes from './modules/workspace/workspace.route';
 import projectRoutes from './modules/project/project.route';
 import taskRoutes from './modules/task/task.route';
 import goalRoutes from './modules/goal/goal.route';
+import noteRoutes from './modules/note/note.route';
 import { HttpResponse } from './utils/response.util';
 
 const app: Application = express();
@@ -21,6 +22,7 @@ app.use('/api/workspaces', workspaceRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/goals', goalRoutes);
+app.use('/api/notes', noteRoutes);
 
 // Health check
 app.get('/api/health', (req: Request, res: Response) => {
