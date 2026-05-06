@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import HttpResponse from '../../utils/http-response';
+import { HttpResponse } from '../../utils/response.util';
 import NoteService from './note.service';
 
 export default class NoteController {
@@ -8,7 +8,7 @@ export default class NoteController {
 
   public getNotes = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { taskId } = req.params;
+      const taskId = req.params.taskId as string;
       const result = await this.noteService.getNotesByTask(taskId);
       return HttpResponse.success(res, StatusCodes.OK, 'Notes retrieved successfully', result);
     } catch (error) {
@@ -18,7 +18,7 @@ export default class NoteController {
 
   public createNote = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { taskId } = req.params;
+      const taskId = req.params.taskId as string;
       const { content } = req.body;
       const authorId = req.user!.userId;
       
@@ -31,7 +31,7 @@ export default class NoteController {
 
   public updateNote = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const { content } = req.body;
       const authorId = req.user!.userId;
 
@@ -44,7 +44,7 @@ export default class NoteController {
 
   public deleteNote = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const authorId = req.user!.userId;
 
       await this.noteService.deleteNote(id, authorId);
