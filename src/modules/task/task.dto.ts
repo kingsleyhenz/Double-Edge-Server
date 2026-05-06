@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional, IsEnum, IsDateString } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { TaskStatus, TaskPriority } from '../../database/enums';
 
 export class CreateTaskDto {
@@ -60,7 +61,8 @@ export class UpdateTaskDto {
   @IsOptional()
   priority?: TaskPriority;
 
+  @Transform(({ value }) => value === '' ? null : value)
   @IsDateString()
   @IsOptional()
-  dueDate?: string;
+  dueDate?: string | null;
 }
