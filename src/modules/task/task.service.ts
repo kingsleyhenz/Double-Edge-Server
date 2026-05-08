@@ -39,6 +39,24 @@ export default class TaskService {
     return tasks;
   }
 
+  public async getTaskById(taskId: string) {
+    const task = await prisma.task.findUnique({
+      where: { id: taskId },
+      include: {
+        assignee: { select: { id: true, name: true, email: true, avatarUrl: true } },
+        project: { select: { id: true, name: true, color: true } },
+        notes: {
+          include: {
+            author: { select: { id: true, name: true, email: true, avatarUrl: true } }
+          },
+          orderBy: { createdAt: 'asc' }
+        }
+      }
+    });
+    if (!task) throw new Error('Task not found');
+    return task;
+  }
+
   public async updateTaskStatus(taskId: string, status: any) {
     const task = await prisma.task.update({
       where: { id: taskId },

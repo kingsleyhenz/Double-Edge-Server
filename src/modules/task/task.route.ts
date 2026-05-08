@@ -9,6 +9,7 @@ const taskController = new TaskController();
 
 router.post('/', authMiddleware, validationMiddleware(CreateTaskDto), taskController.createTask);
 router.get('/workspace/:workspaceId', authMiddleware, taskController.getWorkspaceTasks);
+router.get('/:id', authMiddleware, taskController.getTaskById);
 router.patch('/:id/status', authMiddleware, validationMiddleware(UpdateTaskStatusDto), taskController.updateTaskStatus);
 router.patch('/:id/assign', authMiddleware, validationMiddleware(AssignTaskDto), taskController.assignTask);
 router.patch('/:id', authMiddleware, validationMiddleware(UpdateTaskDto), taskController.updateTask);

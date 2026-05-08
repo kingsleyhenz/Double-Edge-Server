@@ -21,14 +21,18 @@ class TaskController {
   public getWorkspaceTasks = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { workspaceId } = req.params;
-      const filters = {
-        projectId: req.query.projectId as string,
-        assigneeId: req.query.assigneeId as string,
-        status: req.query.status as string,
-        priority: req.query.priority as string,
-      };
-      const result = await this.taskService.getWorkspaceTasks(workspaceId, filters);
+      const result = await this.taskService.getWorkspaceTasks(workspaceId, req.query);
       return HttpResponse.success(res, StatusCodes.OK, 'Tasks retrieved successfully', result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getTaskById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const result = await this.taskService.getTaskById(id);
+      return HttpResponse.success(res, StatusCodes.OK, 'Task retrieved successfully', result);
     } catch (error) {
       next(error);
     }
