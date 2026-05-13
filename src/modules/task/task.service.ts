@@ -32,7 +32,8 @@ export default class TaskService {
       where: whereClause,
       include: {
         assignee: { select: { id: true, name: true, email: true } },
-        project: { select: { id: true, name: true, color: true } }
+        project: { select: { id: true, name: true, color: true } },
+        _count: { select: { notes: true } }
       },
       orderBy: { createdAt: 'desc' }
     });
